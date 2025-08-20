@@ -9,12 +9,19 @@ import { DoctorAgent } from "./DoctorAgentCard";
 type props = {
   doctorAgent: DoctorAgent;
   setSelectedDoctor: any;
+  selectedDoctor: DoctorAgent;
 };
 
-const SuggestedDoctorCard = ({ doctorAgent, setSelectedDoctor }: props) => {
+const SuggestedDoctorCard = ({
+  doctorAgent,
+  setSelectedDoctor,
+  selectedDoctor,
+}: props) => {
   return (
     <div
-      className="flex flex-col items-center border rounded-2xl shadow p-5 hover:border-blue-500 cursor:pointer"
+      className={`flex flex-col items-center border rounded-2xl shadow p-5 hover:border-blue-500 cursor:pointer ${
+        selectedDoctor?.id == doctorAgent?.id && "border-blue-500"
+      }`}
       onClick={() => setSelectedDoctor(doctorAgent)}
     >
       <Image

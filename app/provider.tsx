@@ -24,7 +24,6 @@ export function Provider({
 
   const createNewUser = async () => {
     const result = await axios.post("/api/users");
-    console.log(result);
     setUserDetail(result.data);
   };
 

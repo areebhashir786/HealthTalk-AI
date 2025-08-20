@@ -1,9 +1,14 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@clerk/nextjs";
 import { IconArrowRight } from "@tabler/icons-react";
+import axios from "axios";
+import { Loader2Icon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export type DoctorAgent = {
   id: number;
@@ -11,6 +16,8 @@ export type DoctorAgent = {
   description: string;
   image: string;
   agentPrompt: string;
+  voiceId?: string;
+  subscriptionRequired: boolean;
 };
 
 type props = {
@@ -18,8 +25,30 @@ type props = {
 };
 
 const DoctorAgentCard = ({ doctorAgent }: props) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
+  const { has } = useAuth();
+  // @ts-ignore
+  const paidUser = has && has({ plan: "pro" });
+
+  const onStartConsultation = async () => {
+    setLoading(true);
+    const result = await axios.post("/api/session-chat", {
+      notes: "New Query",
+      selectedDoctor: doctorAgent,
+    });
+    setLoading(false);
+
+    if (result.data?.sessionId) {
+      router.push(`dashboard/medical-agent/${result.data?.sessionId}`);
+    }
+  };
+
   return (
-    <div>
+    <div className="relative">
+      {doctorAgent.subscriptionRequired && (
+        <Badge className="absolute m-2 right-0 z-999">Premium</Badge>
+      )}
       <Image
         src={doctorAgent.image}
         alt={doctorAgent.specialist}
@@ -32,8 +61,17 @@ const DoctorAgentCard = ({ doctorAgent }: props) => {
       <p className="line-clamp-2 text-sm text-gray-500">
         {doctorAgent.description}
       </p>
-      <Button className="w-full mt-2">
-        Start Consultation <IconArrowRight />
+      <Button
+        className="w-full mt-2"
+        onClick={onStartConsultation}
+        disabled={!paidUser && doctorAgent.subscriptionRequired}
+      >
+        Start Consultation{" "}
+        {loading ? (
+          <Loader2Icon className="animate-spin" />
+        ) : (
+          <IconArrowRight />
+        )}
       </Button>
     </div>
   );

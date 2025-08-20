@@ -1,5 +1,4 @@
 import React from "react";
-import AppHeader from "./_components/AppHeader";
 import HistoryList from "./_components/HistoryList";
 import { Button } from "@/components/ui/button";
 import DoctorsAgentList from "./_components/DoctorsAgentList";
