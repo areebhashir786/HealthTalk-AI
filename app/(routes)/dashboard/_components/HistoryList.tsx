@@ -9,7 +9,7 @@ import HistoryTable from "./HistoryTable";
 
 const HistoryList = () => {
   const [historyList, setHistoryList] = useState<any>([]); // Added type for state
-  const [loading, setLoading] = useState<boolean>(true); // Added loading state
+  const [loading, setLoading] = useState<boolean>(false); // Added loading state
   const [error, setError] = useState<string | null>(null); // Added error state
 
   const getHistoryList = async () => {

@@ -26,7 +26,7 @@ type props = {
 
 const DoctorAgentCard = ({ doctorAgent }: props) => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const { has } = useAuth();
   // @ts-ignore
   const paidUser = has && has({ plan: "pro" });

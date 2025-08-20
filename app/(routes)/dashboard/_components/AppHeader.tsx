@@ -17,7 +17,7 @@ const menuOptions = [
   {
     id: 3,
     name: "Pricing",
-    path: "/pricing",
+    path: "/dashboard/pricing",
   },
   {
     id: 4,
